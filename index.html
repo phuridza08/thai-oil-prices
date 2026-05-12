@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ราคาน้ำมันไทย — Thai Oil Prices</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⛽</text></svg>">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  body { font-family: 'Sarabun', -apple-system, system-ui, sans-serif; }
+  .price-up   { color: #dc2626; }
+  .price-down { color: #16a34a; }
+  .price-same { color: #6b7280; }
+</style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+<header class="bg-gradient-to-r from-sky-700 to-sky-900 text-white shadow-lg">
+  <div class="max-w-7xl mx-auto px-4 py-6">
+    <div class="flex items-center justify-between flex-wrap gap-2">
+      <div>
+        <h1 class="text-2xl md:text-3xl font-bold">⛽ ราคาน้ำมันไทยวันนี้</h1>
+        <p class="text-sky-100 text-sm mt-1">ราคาขายปลีก กรุงเทพฯ และปริมณฑล</p>
+      </div>
+      <div class="text-right">
+        <div class="text-xs text-sky-200">อัปเดตล่าสุด</div>
+        <div id="last-updated" class="text-sm md:text-base font-semibold">–</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-7xl mx-auto px-4 py-6">
+
+  <div class="bg-white rounded-xl shadow p-4 mb-6 flex flex-wrap items-center gap-3">
+    <span class="text-sm font-semibold text-slate-600">เลือกชนิดน้ำมัน:</span>
+    <div id="fuel-tabs" class="flex flex-wrap gap-2"></div>
+  </div>
+
+  <div id="brand-cards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8"></div>
+
+  <div id="comparison" class="bg-white rounded-xl shadow p-4 mb-8 overflow-x-auto">
+    <h2 class="text-lg font-bold mb-3 text-slate-700">📊 เปรียบเทียบทุกแบรนด์ × ทุกชนิด (ราคาวันนี้)</h2>
+    <table id="compare-table" class="w-full text-sm">
+      <thead></thead><tbody></tbody>
+    </table>
+  </div>
+
+  <div class="bg-white rounded-xl shadow p-4">
+    <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
+      <h2 class="text-lg font-bold text-slate-700">📈 กราฟย้อนหลัง 30 วัน</h2>
+      <div class="flex gap-2 text-sm">
+        <select id="chart-brand" class="border rounded px-2 py-1"></select>
+        <select id="chart-fuel" class="border rounded px-2 py-1"></select>
+      </div>
+    </div>
+    <div class="relative" style="height: 320px;"><canvas id="history-chart"></canvas></div>
+  </div>
+
+  <p class="text-xs text-slate-500 text-center mt-8">
+    Data updated daily 07:00 ICT · Sources: PTT, Bangchak, Shell (via checkraka), Caltex<br>
+    Esso = Bangchak Sriracha (BSRC) ตั้งแต่ปี 2566
+  </p>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
