@@ -4,6 +4,13 @@ __pycache__/
 venv/
 .env
 .DS_Store
-*.log
 .vscode/
 .idea/
+
+# local Flask test output (don't commit)
+_flask.log
+_flask.err
+
+# scraper log files — DO commit (under data/logs/)
+*.log
+!data/logs/*.log

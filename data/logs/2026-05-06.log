@@ -1,0 +1,6 @@
+# Daily oil price log - 2026-05-06 [SEED]
+[2026-05-06 07:00:00+07:00] ptt      | gasoline_95=52.70 gasohol_95=42.85 gasohol_91=42.56 e20=35.10 e85=32.01 diesel_b7=39.55 diesel_b20=33.80 premium_diesel=60.81
+[2026-05-06 07:00:00+07:00] bangchak | gasoline_95=54.29 gasohol_95=42.05 gasohol_91=42.72 e20=34.70 e85=32.17 diesel_b7=40.38 diesel_b20=33.31 premium_diesel=61.72
+[2026-05-06 07:00:00+07:00] shell    | gasoline_95=- gasohol_95=42.13 gasohol_91=43.25 e20=36.59 e85=- diesel_b7=40.45 diesel_b20=- premium_diesel=50.27
+[2026-05-06 07:00:00+07:00] esso     | gasoline_95=54.72 gasohol_95=43.24 gasohol_91=41.65 e20=36.20 e85=30.67 diesel_b7=40.46 diesel_b20=32.21 premium_diesel=60.40
+[2026-05-06 07:00:00+07:00] caltex   | gasoline_95=55.44 gasohol_95=43.24 gasohol_91=41.30 e20=35.88 e85=- diesel_b7=40.35 diesel_b20=- premium_diesel=62.00

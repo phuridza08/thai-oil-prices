@@ -5,22 +5,132 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ราคาน้ำมันไทย — Thai Oil Prices</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⛽</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
-  body { font-family: 'Sarabun', -apple-system, system-ui, sans-serif; }
+  html, body, button, input, select, textarea, table {
+    font-family: 'Comfortaa', -apple-system, system-ui, sans-serif;
+  }
+  body { background: linear-gradient(180deg,#f0f9ff 0%, #f8fafc 240px); }
+
+  /* ===== Color helpers ===== */
   .price-up   { color: #dc2626; }
   .price-down { color: #16a34a; }
-  .price-same { color: #6b7280; }
+  .price-same { color: #9ca3af; }
+
+  /* ===== Entrance: cards / sections ===== */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0 } to { opacity: 1 }
+  }
+  .anim-in    { animation: fadeInUp .55s cubic-bezier(.21,.61,.35,1) backwards; }
+  .anim-fade  { animation: fadeIn .4s ease-out backwards; }
+
+  /* ===== Brand cards ===== */
+  .brand-card {
+    position: relative; overflow: hidden;
+    transition: transform .25s cubic-bezier(.21,.61,.35,1),
+                box-shadow .25s ease-out,
+                border-color .25s ease-out;
+    cursor: pointer;
+    will-change: transform;
+  }
+  .brand-card:hover {
+    transform: translateY(-4px) scale(1.015);
+    box-shadow: 0 14px 28px -8px rgba(2,132,199,0.18), 0 6px 12px -6px rgba(0,0,0,0.08);
+  }
+  .brand-card:active { transform: translateY(-2px) scale(.99); }
+
+  .brand-card .details {
+    max-height: 0; opacity: 0; overflow: hidden;
+    transition: max-height .4s cubic-bezier(.4,0,.2,1), opacity .25s ease-out;
+    margin-top: 0;
+  }
+  .brand-card.expanded .details {
+    max-height: 400px; opacity: 1; margin-top: 0.75rem;
+  }
+  .brand-card .chevron {
+    transition: transform .3s ease-out;
+    color: #94a3b8;
+  }
+  .brand-card.expanded .chevron { transform: rotate(180deg); }
+
+  /* ===== Click ripple ===== */
+  .ripple-host { position: relative; overflow: hidden; }
+  .ripple {
+    position: absolute; border-radius: 50%;
+    background: currentColor; opacity: 0.18;
+    transform: scale(0); pointer-events: none;
+    animation: ripple-go .6s ease-out forwards;
+  }
+  @keyframes ripple-go {
+    to { transform: scale(2.5); opacity: 0; }
+  }
+
+  /* ===== Tabs ===== */
+  .fuel-tab {
+    transition: background-color .2s ease-out, color .2s ease-out, transform .15s ease-out;
+  }
+  .fuel-tab:hover:not(.active) { background: #e2e8f0; transform: translateY(-1px); }
+  .fuel-tab.active {
+    background: linear-gradient(135deg,#0284c7 0%, #0369a1 100%);
+    color: white;
+    box-shadow: 0 4px 12px -2px rgba(2,132,199,0.45);
+  }
+
+  /* ===== Arrow bounce on price change ===== */
+  @keyframes bounceUp {
+    0%,100% { transform: translateY(0); }
+    30% { transform: translateY(-3px); }
+    60% { transform: translateY(-1px); }
+  }
+  @keyframes bounceDown {
+    0%,100% { transform: translateY(0); }
+    30% { transform: translateY(3px); }
+    60% { transform: translateY(1px); }
+  }
+  .arrow-up   { display: inline-block; animation: bounceUp 1.6s ease-in-out infinite; }
+  .arrow-down { display: inline-block; animation: bounceDown 1.6s ease-in-out infinite; }
+
+  /* ===== Pulse on freshly-changed price ===== */
+  @keyframes priceFlash {
+    0% { background-color: rgba(250, 204, 21, 0); }
+    20% { background-color: rgba(250, 204, 21, .35); }
+    100% { background-color: rgba(250, 204, 21, 0); }
+  }
+  .flash { animation: priceFlash 1.2s ease-out; }
+
+  /* ===== Table row hover ===== */
+  #compare-table tbody tr {
+    transition: background-color .2s ease-out, transform .15s ease-out;
+  }
+  #compare-table tbody tr:hover {
+    background: rgba(14,165,233,0.07);
+    transform: translateX(2px);
+  }
+
+  /* ===== Chart container subtle entry ===== */
+  .chart-wrap { animation: fadeIn .6s ease-out .2s backwards; }
+
+  /* ===== Number transitions ===== */
+  .price-num { transition: color .3s ease-out; font-variant-numeric: tabular-nums; }
 </style>
 </head>
-<body class="bg-slate-50 text-slate-800">
+<body class="text-slate-800">
 
-<header class="bg-gradient-to-r from-sky-700 to-sky-900 text-white shadow-lg">
+<header class="bg-gradient-to-r from-sky-700 to-sky-900 text-white shadow-lg anim-fade">
   <div class="max-w-7xl mx-auto px-4 py-6">
     <div class="flex items-center justify-between flex-wrap gap-2">
       <div>
-        <h1 class="text-2xl md:text-3xl font-bold">⛽ ราคาน้ำมันไทยวันนี้</h1>
+        <h1 class="text-2xl md:text-3xl font-bold flex items-center gap-2">
+          <span class="inline-block">⛽</span> ราคาน้ำมันดีเซลวันนี้
+        </h1>
         <p class="text-sky-100 text-sm mt-1">ราคาขายปลีก กรุงเทพฯ และปริมณฑล</p>
       </div>
       <div class="text-right">
@@ -33,33 +143,45 @@
 
 <main class="max-w-7xl mx-auto px-4 py-6">
 
-  <div class="bg-white rounded-xl shadow p-4 mb-6 flex flex-wrap items-center gap-3">
+  <div class="bg-white rounded-xl shadow p-4 mb-6 flex flex-wrap items-center gap-3 anim-in" style="animation-delay:.05s">
     <span class="text-sm font-semibold text-slate-600">เลือกชนิดน้ำมัน:</span>
     <div id="fuel-tabs" class="flex flex-wrap gap-2"></div>
   </div>
 
   <div id="brand-cards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8"></div>
 
-  <div id="comparison" class="bg-white rounded-xl shadow p-4 mb-8 overflow-x-auto">
-    <h2 class="text-lg font-bold mb-3 text-slate-700">📊 เปรียบเทียบทุกแบรนด์ × ทุกชนิด (ราคาวันนี้)</h2>
+  <div class="bg-white rounded-xl shadow p-4 mb-8 anim-in" style="animation-delay:.35s">
+    <h2 class="text-lg font-bold mb-3 text-slate-700 flex items-center gap-2">
+      <span>🏁</span> เปรียบเทียบแบรนด์วันนี้ —
+      <span id="bar-fuel-label" class="text-sky-600">ดีเซล B7</span>
+    </h2>
+    <div class="relative" style="height: 280px;"><canvas id="brands-bar"></canvas></div>
+  </div>
+
+  <div id="comparison" class="bg-white rounded-xl shadow p-4 mb-8 overflow-x-auto anim-in" style="animation-delay:.45s">
+    <h2 class="text-lg font-bold mb-3 text-slate-700 flex items-center gap-2">
+      <span>📊</span> เปรียบเทียบทุกแบรนด์ × ทุกชนิด
+    </h2>
     <table id="compare-table" class="w-full text-sm">
       <thead></thead><tbody></tbody>
     </table>
   </div>
 
-  <div class="bg-white rounded-xl shadow p-4">
+  <div class="bg-white rounded-xl shadow p-4 chart-wrap">
     <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
-      <h2 class="text-lg font-bold text-slate-700">📈 กราฟย้อนหลัง 30 วัน</h2>
+      <h2 class="text-lg font-bold text-slate-700 flex items-center gap-2">
+        <span>📈</span> กราฟย้อนหลัง 30 วัน
+      </h2>
       <div class="flex gap-2 text-sm">
-        <select id="chart-brand" class="border rounded px-2 py-1"></select>
-        <select id="chart-fuel" class="border rounded px-2 py-1"></select>
+        <select id="chart-brand" class="border rounded-lg px-2 py-1 hover:border-sky-400 transition"></select>
+        <select id="chart-fuel"  class="border rounded-lg px-2 py-1 hover:border-sky-400 transition"></select>
       </div>
     </div>
     <div class="relative" style="height: 320px;"><canvas id="history-chart"></canvas></div>
   </div>
 
-  <p class="text-xs text-slate-500 text-center mt-8">
-    Data updated daily 07:00 ICT · Sources: PTT, Bangchak, Shell (via checkraka), Caltex<br>
+  <p class="text-xs text-slate-500 text-center mt-8 anim-fade" style="animation-delay:.7s">
+    Data updated daily 07:00 ICT · Source: kapook.com<br>
     Esso = Bangchak Sriracha (BSRC) ตั้งแต่ปี 2566
   </p>
 </main>

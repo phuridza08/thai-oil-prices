@@ -22,6 +22,7 @@ BRANDS = {
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 DATA_FILE = REPO_ROOT / "data" / "prices.json"
+LOG_DIR   = REPO_ROOT / "data" / "logs"
 HISTORY_DAYS = 35  # keep ~30 + buffer
 
 
@@ -47,6 +48,26 @@ def prune_history(history: dict) -> dict:
         return history
     keep = set(days[-HISTORY_DAYS:])
     return {d: v for d, v in history.items() if d in keep}
+
+
+def write_log_file(date_iso: str, snapshot: dict) -> None:
+    """Append/overwrite today's .log file (text format)."""
+    LOG_DIR.mkdir(parents=True, exist_ok=True)
+    lines = [f"# Daily oil price log - {date_iso} [LIVE]"]
+    for brand, fuels in snapshot.items():
+        parts = [f"{fuel}={'-' if p is None else f'{p:.2f}'}" for fuel, p in fuels.items()]
+        lines.append(f"[{date_iso} 07:00:00+07:00] {brand:<9}| " + " ".join(parts))
+    (LOG_DIR / f"{date_iso}.log").write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def prune_logs() -> None:
+    """Keep only the most recent HISTORY_DAYS .log files."""
+    if not LOG_DIR.exists():
+        return
+    files = sorted(LOG_DIR.glob("*.log"))
+    excess = len(files) - HISTORY_DAYS
+    for f in files[:max(0, excess)]:
+        f.unlink(missing_ok=True)
 
 
 def main() -> int:
@@ -84,7 +105,10 @@ def main() -> int:
         json.dumps(data, ensure_ascii=False, indent=2),
         encoding="utf-8",
     )
+    write_log_file(today, snapshot)
+    prune_logs()
     print(f"\nWrote {DATA_FILE} with snapshot for {today}", flush=True)
+    print(f"Wrote {LOG_DIR / (today + '.log')}", flush=True)
 
     if len(failures) == len(BRANDS):
         print("All brands failed — exiting non-zero", file=sys.stderr)
