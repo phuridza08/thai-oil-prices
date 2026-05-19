@@ -1474,58 +1474,6 @@
         "premium_diesel": 60.41
       }
     },
-    "2026-04-14": {
-      "ptt": {
-        "gasoline_95": 54.31,
-        "gasohol_95": 42.8,
-        "gasohol_91": 43.96,
-        "e20": 34.18,
-        "e85": 32.94,
-        "diesel_b7": 40.5,
-        "diesel_b20": 32.36,
-        "premium_diesel": 60.43
-      },
-      "bangchak": {
-        "gasoline_95": 53.5,
-        "gasohol_95": 43.61,
-        "gasohol_91": 42.59,
-        "e20": 35.43,
-        "e85": 31.13,
-        "diesel_b7": 40.17,
-        "diesel_b20": 33.48,
-        "premium_diesel": 62.85
-      },
-      "shell": {
-        "gasoline_95": null,
-        "gasohol_95": 42.0,
-        "gasohol_91": 44.39,
-        "e20": 39.02,
-        "e85": null,
-        "diesel_b7": 39.32,
-        "diesel_b20": null,
-        "premium_diesel": 50.4
-      },
-      "esso": {
-        "gasoline_95": 52.29,
-        "gasohol_95": 44.79,
-        "gasohol_91": 40.49,
-        "e20": 36.03,
-        "e85": 29.38,
-        "diesel_b7": 40.3,
-        "diesel_b20": 33.67,
-        "premium_diesel": 62.71
-      },
-      "caltex": {
-        "gasoline_95": 56.45,
-        "gasohol_95": 44.44,
-        "gasohol_91": 40.62,
-        "e20": 35.96,
-        "e85": null,
-        "diesel_b7": 38.53,
-        "diesel_b20": null,
-        "premium_diesel": 60.41
-      }
-    },
     "2026-05-13": {
       "ptt": {
         "gasoline_95": 52.94,
@@ -1837,8 +1785,60 @@
         "diesel_b20": null,
         "premium_diesel": 61.25
       }
+    },
+    "2026-05-19": {
+      "ptt": {
+        "gasoline_95": 54.49,
+        "gasohol_95": 44.9,
+        "gasohol_91": 44.53,
+        "e20": 37.9,
+        "e85": 33.84,
+        "diesel_b7": 42.2,
+        "diesel_b20": 35.2,
+        "premium_diesel": 61.25
+      },
+      "bangchak": {
+        "gasoline_95": 55.09,
+        "gasohol_95": 44.9,
+        "gasohol_91": 44.53,
+        "e20": 37.9,
+        "e85": 33.84,
+        "diesel_b7": 42.2,
+        "diesel_b20": 35.2,
+        "premium_diesel": 61.25
+      },
+      "shell": {
+        "gasoline_95": null,
+        "gasohol_95": 45.4,
+        "gasohol_91": 45.03,
+        "e20": 38.4,
+        "e85": null,
+        "diesel_b7": 41.45,
+        "diesel_b20": null,
+        "premium_diesel": 49.84
+      },
+      "esso": {
+        "gasoline_95": 55.09,
+        "gasohol_95": 44.9,
+        "gasohol_91": 44.53,
+        "e20": 37.9,
+        "e85": 33.84,
+        "diesel_b7": 42.2,
+        "diesel_b20": 35.2,
+        "premium_diesel": 61.25
+      },
+      "caltex": {
+        "gasoline_95": 54.49,
+        "gasohol_95": 44.9,
+        "gasohol_91": 44.53,
+        "e20": 37.9,
+        "e85": null,
+        "diesel_b7": 42.2,
+        "diesel_b20": null,
+        "premium_diesel": 61.25
+      }
     }
   },
-  "last_run_utc": "2026-05-18T12:52:24+00:00",
+  "last_run_utc": "2026-05-19T11:43:07+00:00",
   "seeded": true
 }
